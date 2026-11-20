@@ -1,0 +1,732 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created by COPASI version 4.46 (Build 300) on 2026-03-05 17:46 with libSBML version 5.20.5. -->
+<sbml xmlns="http://www.sbml.org/sbml/level2/version4" level="2" version="4">
+  <model metaid="COPASI0" id="NFkB_p65p50_only_feedback" name="NFkB_p65p50_only_feedback">
+    <notes>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+        <pre>Versão simplificada do modelo, com o feedback positivo envolvendo p65 e p50 mas sem os demais genes: Twist1, Slug e SIP1.
+- NFkB ativa apenas seus próprios genes p50 e p65.
+- A ativação pelo NFkB sempre ocorre pelo dímero p65p50.
+
+Vamos assumir como condição inicial os valores das variáveis no estado estacinário instável (ver &quot;18_para_NFkB_only_p65p50_feedback.mws&quot;).
+
+Arquivo usado para gerar os dados para construir o landscape no matlab. Ver seção &quot;Landscape combinando MATLAB e COPASI&quot; no arquivo doc de acompanhamento.</pre>
+      </body>
+    </notes>
+    <annotation>
+      <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#" xmlns:bqbiol="http://biomodels.net/biology-qualifiers/" xmlns:bqmodel="http://biomodels.net/model-qualifiers/">
+        <rdf:Description rdf:about="#COPASI0">
+          <dc:creator>
+            <rdf:Bag>
+              <rdf:li rdf:parseType="Resource">
+                <vCard:N rdf:parseType="Resource">
+                  <vCard:Family>Lopes</vCard:Family>
+                  <vCard:Given>Francisco</vCard:Given>
+                </vCard:N>
+                <vCard:EMAIL>flopes@ufrj.br</vCard:EMAIL>
+                <vCard:ORG rdf:parseType="Resource">
+                  <vCard:Orgname>Universidade Federal do Rio de Janeiro</vCard:Orgname>
+                </vCard:ORG>
+              </rdf:li>
+            </rdf:Bag>
+          </dc:creator>
+          <dcterms:created rdf:parseType="Resource">
+            <dcterms:W3CDTF>2018-07-16T22:34:17Z</dcterms:W3CDTF>
+          </dcterms:created>
+          <dcterms:modified rdf:parseType="Resource">
+            <dcterms:W3CDTF>2018-07-16T22:34:17Z</dcterms:W3CDTF>
+          </dcterms:modified>
+        </rdf:Description>
+      </rdf:RDF>
+      <copasi:COPASI xmlns:copasi="http://www.copasi.org/static/sbml">
+        <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#">
+          <rdf:Description rdf:about="#COPASI0">
+            <dcterms:created>
+              <rdf:Description>
+                <dcterms:W3CDTF>2018-07-16T22:34:17Z</dcterms:W3CDTF>
+              </rdf:Description>
+            </dcterms:created>
+            <dcterms:creator>
+              <rdf:Description>
+                <vCard:EMAIL>flopes@ufrj.br</vCard:EMAIL>
+                <vCard:N>
+                  <rdf:Description>
+                    <vCard:Family>Lopes</vCard:Family>
+                    <vCard:Given>Francisco</vCard:Given>
+                  </rdf:Description>
+                </vCard:N>
+                <vCard:ORG>
+                  <rdf:Description>
+                    <vCard:Orgname>Universidade Federal do Rio de Janeiro</vCard:Orgname>
+                  </rdf:Description>
+                </vCard:ORG>
+              </rdf:Description>
+            </dcterms:creator>
+          </rdf:Description>
+        </rdf:RDF>
+      </copasi:COPASI>
+    </annotation>
+    <listOfFunctionDefinitions>
+      <functionDefinition id="Constant_flux__irreversible" name="Constant flux (irreversible)">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <lambda>
+            <bvar>
+              <ci> v </ci>
+            </bvar>
+            <ci> v </ci>
+          </lambda>
+        </math>
+      </functionDefinition>
+    </listOfFunctionDefinitions>
+    <listOfUnitDefinitions>
+      <unitDefinition id="length" name="length">
+        <listOfUnits>
+          <unit kind="metre" exponent="1" scale="0" multiplier="1"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="area" name="area">
+        <listOfUnits>
+          <unit kind="metre" exponent="2" scale="0" multiplier="1"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="volume" name="volume">
+        <listOfUnits>
+          <unit kind="litre" exponent="1" scale="-12" multiplier="1"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="time" name="time">
+        <listOfUnits>
+          <unit kind="second" exponent="1" scale="-3" multiplier="60"/>
+        </listOfUnits>
+      </unitDefinition>
+      <unitDefinition id="substance" name="substance">
+        <listOfUnits>
+          <unit kind="item" exponent="1" scale="0" multiplier="1"/>
+        </listOfUnits>
+      </unitDefinition>
+    </listOfUnitDefinitions>
+    <listOfCompartments>
+      <compartment metaid="COPASI1" id="Cytoplasm" name="Cytoplasm" spatialDimensions="3" size="1" constant="true">
+        <annotation>
+          <copasi:COPASI xmlns:copasi="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI1">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2018-07-23T14:36:00Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </copasi:COPASI>
+        </annotation>
+      </compartment>
+    </listOfCompartments>
+    <listOfSpecies>
+      <species metaid="COPASI2" id="NFkB" name="NFkB" compartment="Cytoplasm" initialConcentration="126431.288370417" boundaryCondition="false" constant="false">
+        <annotation>
+          <copasi:COPASI xmlns:copasi="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI2">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2021-03-09T14:34:27Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </copasi:COPASI>
+        </annotation>
+      </species>
+      <species metaid="COPASI3" id="NFkB_N1p50" name="NFkB.N1p50" compartment="Cytoplasm" initialConcentration="1" boundaryCondition="false" constant="false">
+        <annotation>
+          <copasi:COPASI xmlns:copasi="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#Metabolite_34">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2021-03-31T14:34:10Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </copasi:COPASI>
+        </annotation>
+      </species>
+      <species metaid="COPASI4" id="NFkB_N1p65" name="NFkB.N1p65" compartment="Cytoplasm" initialConcentration="1" boundaryCondition="false" constant="false">
+        <annotation>
+          <copasi:COPASI xmlns:copasi="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#Metabolite_37">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2021-03-31T14:35:40Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </copasi:COPASI>
+        </annotation>
+      </species>
+      <species metaid="COPASI5" id="p65" name="p65" compartment="Cytoplasm" initialConcentration="535274.691371264" boundaryCondition="false" constant="false">
+        <annotation>
+          <copasi:COPASI xmlns:copasi="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI5">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2021-04-29T21:06:37Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </copasi:COPASI>
+        </annotation>
+      </species>
+      <species metaid="COPASI6" id="p50" name="p50" compartment="Cytoplasm" initialConcentration="150492.215674055" boundaryCondition="false" constant="false">
+        <annotation>
+          <copasi:COPASI xmlns:copasi="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI6">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2021-04-29T21:08:05Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </copasi:COPASI>
+        </annotation>
+      </species>
+      <species metaid="COPASI7" id="RNAp50" name="RNAp50" compartment="Cytoplasm" initialConcentration="483.444209893183" boundaryCondition="false" constant="false">
+        <annotation>
+          <copasi:COPASI xmlns:copasi="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI7">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2021-04-29T21:11:12Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </copasi:COPASI>
+        </annotation>
+      </species>
+      <species metaid="COPASI8" id="RNAp65" name="RNAp65" compartment="Cytoplasm" initialConcentration="625.253235709429" boundaryCondition="false" constant="false">
+        <annotation>
+          <copasi:COPASI xmlns:copasi="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI8">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2021-04-29T21:11:56Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </copasi:COPASI>
+        </annotation>
+      </species>
+      <species id="N0p50" name="N0p50" compartment="Cytoplasm" initialConcentration="1" boundaryCondition="false" constant="false"/>
+      <species id="N0p65" name="N0p65" compartment="Cytoplasm" initialConcentration="1" boundaryCondition="false" constant="false"/>
+    </listOfSpecies>
+    <listOfReactions>
+      <reaction metaid="COPASI9" id="Degradation_of_p65_protein__p65__0" name="Degradation of p65 protein [p65, 0]" reversible="false">
+        <annotation>
+          <copasi:COPASI xmlns:copasi="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI9">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2018-11-17T00:11:00Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </copasi:COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="p65" stoichiometry="1"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> k1 </ci>
+              <ci> p65 </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="k1" name="k1" value="0.052506"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI10" id="NFkB_dimer_formation__forward___p50_p65__NFkB" name="NFkB dimer formation (forward) [p50+p65, NFkB]" reversible="false">
+        <annotation>
+          <copasi:COPASI xmlns:copasi="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI10">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2021-03-31T14:21:35Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </copasi:COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="p50" stoichiometry="1"/>
+          <speciesReference species="p65" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="NFkB" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> k1 </ci>
+              <ci> p50 </ci>
+              <ci> p65 </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="k1" name="k1" value="2.66319e-06"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI11" id="NFkB_dimer_formation__backward___NFkB__p50_p65" name="NFkB dimer formation (backward) [NFkB, p50+p65]" reversible="false">
+        <annotation>
+          <copasi:COPASI xmlns:copasi="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI11">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2021-03-31T14:21:46Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </copasi:COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="NFkB" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="p50" stoichiometry="1"/>
+          <speciesReference species="p65" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> k1 </ci>
+              <ci> NFkB </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="k1" name="k1" value="1.69683"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI12" id="NFkB_activates_p50_step_1__forward___NFkB_N0p50__NFkB_N1p50" name="NFkB activates p50 step 1 (forward) [N0p50 -&gt; N1p50]" reversible="false">
+        <annotation>
+          <copasi:COPASI xmlns:copasi="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI12">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2021-03-31T14:27:29Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </copasi:COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="NFkB" stoichiometry="1"/>
+          <speciesReference species="N0p50" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="NFkB_N1p50" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> k1 </ci>
+              <ci> NFkB </ci>
+              <ci> N0p50 </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="k1" name="k1" value="0.902865"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI13" id="NFkB_activates_p50_step_1__backward___NFkB_N1p50__NFkB_N0p50" name="NFkB activates p50 step 1 (backward) [N1p50 -&gt; N0p50]" reversible="false">
+        <annotation>
+          <copasi:COPASI xmlns:copasi="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI13">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2021-03-31T14:27:40Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </copasi:COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="NFkB_N1p50" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="NFkB" stoichiometry="1"/>
+          <speciesReference species="N0p50" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> k1 </ci>
+              <ci> NFkB_N1p50 </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="k1" name="k1" value="82909"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI14" id="NFkB_activates_p50_step_2__NFkB_N1p50__NFkB_N1p50_RNAp50" name="NFkB activates p50 step 2 [N1p50 -&gt; N1p50 + RNAp50]" reversible="false">
+        <annotation>
+          <copasi:COPASI xmlns:copasi="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI14">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2021-03-31T14:27:51Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </copasi:COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="NFkB_N1p50" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="NFkB_N1p50" stoichiometry="1"/>
+          <speciesReference species="RNAp50" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> k1 </ci>
+              <ci> NFkB_N1p50 </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="k1" name="k1" value="37.0696"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI15" id="NFkB_activates_p65_step_1__forward___NFkB_N0p65__NFkB_N1p65" name="NFkB activates p65 step 1 (forward) [N0p65 -&gt; N1p65]" reversible="false">
+        <annotation>
+          <copasi:COPASI xmlns:copasi="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI15">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2021-03-31T14:28:24Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </copasi:COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="NFkB" stoichiometry="1"/>
+          <speciesReference species="N0p65" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="NFkB_N1p65" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> k1 </ci>
+              <ci> NFkB </ci>
+              <ci> N0p65 </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="k1" name="k1" value="0.000890887"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI16" id="NFkB_activates_p65_step_1__backward___NFkB_N1p65__NFkB_N0p65" name="NFkB activates p65 step 1 (backward) [N1p65 -&gt; N0p65]" reversible="false">
+        <annotation>
+          <copasi:COPASI xmlns:copasi="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI16">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2021-03-31T14:28:35Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </copasi:COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="NFkB_N1p65" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="NFkB" stoichiometry="1"/>
+          <speciesReference species="N0p65" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> k1 </ci>
+              <ci> NFkB_N1p65 </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="k1" name="k1" value="104.883"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI17" id="NFkB_activates_p65_step_2__NFkB_N1p65__NFkB_N1p65_RNAp65" name="NFkB activates p65 step 2 [N1p65 -&gt; RNAp65]" reversible="false">
+        <annotation>
+          <copasi:COPASI xmlns:copasi="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI17">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2021-03-31T14:28:41Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </copasi:COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="NFkB_N1p65" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="NFkB_N1p65" stoichiometry="1"/>
+          <speciesReference species="RNAp65" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> k1 </ci>
+              <ci> NFkB_N1p65 </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="k1" name="k1" value="56.2307"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI18" id="Degradation_of_p50_protein__p50__0" name="Degradation of p50 protein [p50, 0]" reversible="false">
+        <annotation>
+          <copasi:COPASI xmlns:copasi="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI18">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2021-04-29T21:07:03Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </copasi:COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="p50" stoichiometry="1"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> k1 </ci>
+              <ci> p50 </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="k1" name="k1" value="0.0301325"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI19" id="Degradation_of_p50_RNA__RNAp50__0" name="Degradation of p50 RNA [RNAp50, 0]" reversible="false">
+        <annotation>
+          <copasi:COPASI xmlns:copasi="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI19">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2021-04-29T21:10:12Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </copasi:COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="RNAp50" stoichiometry="1"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> k1 </ci>
+              <ci> RNAp50 </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="k1" name="k1" value="0.1015"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI20" id="Degradation_of_p65_RNA__RNAp65__0" name="Degradation of p65 RNA [RNAp65, 0]" reversible="false">
+        <annotation>
+          <copasi:COPASI xmlns:copasi="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI20">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2021-04-29T21:11:33Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </copasi:COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="RNAp65" stoichiometry="1"/>
+        </listOfReactants>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> k1 </ci>
+              <ci> RNAp65 </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="k1" name="k1" value="0.107848"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI21" id="p50_RNA_produces_p50_protein__RNAp50__RNAp50_p50" name="p50 RNA produces p50 protein [RNAp50 -&gt; p50]" reversible="false">
+        <annotation>
+          <copasi:COPASI xmlns:copasi="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI21">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2021-04-29T21:24:48Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </copasi:COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="RNAp50" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="RNAp50" stoichiometry="1"/>
+          <speciesReference species="p50" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> k1 </ci>
+              <ci> RNAp50 </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="k1" name="k1" value="9.38"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction metaid="COPASI22" id="p65_RNA_produces_p65_protein__RNAp65__RNAp65_p65" name="p65 RNA produces p65 protein [RNAp65 -&gt; p65]" reversible="false">
+        <annotation>
+          <copasi:COPASI xmlns:copasi="http://www.copasi.org/static/sbml">
+            <rdf:RDF xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about="#COPASI22">
+                <dcterms:created>
+                  <rdf:Description>
+                    <dcterms:W3CDTF>2021-04-29T21:25:53Z</dcterms:W3CDTF>
+                  </rdf:Description>
+                </dcterms:created>
+              </rdf:Description>
+            </rdf:RDF>
+          </copasi:COPASI>
+        </annotation>
+        <listOfReactants>
+          <speciesReference species="RNAp65" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="RNAp65" stoichiometry="1"/>
+          <speciesReference species="p65" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <times/>
+              <ci> k1 </ci>
+              <ci> RNAp65 </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="k1" name="k1" value="44.95"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="p50_RNA_source__0__RNAp50_" name="p50 RNA source [0 -&gt; RNAp50]" reversible="false">
+        <listOfProducts>
+          <speciesReference species="RNAp50" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> Constant_flux__irreversible </ci>
+              <ci> v </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="v" name="v" value="6.12305"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+      <reaction id="p65_RNA_source__0__RNAp65" name="p65 RNA source [0 -&gt; RNAp65]" reversible="false">
+        <listOfProducts>
+          <speciesReference species="RNAp65" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+              <ci> Constant_flux__irreversible </ci>
+              <ci> v </ci>
+            </apply>
+          </math>
+          <listOfParameters>
+            <parameter id="v" name="v" value="9.19739"/>
+          </listOfParameters>
+        </kineticLaw>
+      </reaction>
+    </listOfReactions>
+  </model>
+</sbml>

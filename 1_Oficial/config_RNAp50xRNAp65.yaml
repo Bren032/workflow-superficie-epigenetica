@@ -1,0 +1,122 @@
+# =========================================================
+# CONFIGURAÇÃO DO WORKFLOW - LNCC / SDUMONT
+# Execução: sbatch submeter_lncc.sh
+# =========================================================
+
+
+# =========================================================
+# NEXTFLOW
+# =========================================================
+workflow:
+
+  config_file: /scratch/rtm-uq/alexandre.lima/Breno/config.yaml
+
+  scripts:
+    stationary_points: /scratch/rtm-uq/alexandre.lima/Breno/1_pontos_estacionarios.py
+    simulation: /scratch/rtm-uq/alexandre.lima/Breno/2_simulacoes_copasi.py
+    draw_landscape: /scratch/rtm-uq/alexandre.lima/Breno/3_superficie_epigenetica.py
+
+  outdir: /scratch/rtm-uq/alexandre.lima/Breno/resultados
+
+  # Número de pontos por tarefa GERAR_LANDSCAPE
+  chunk_size: 3
+
+  # Processos MPI usados na etapa 3
+  np_mpi: 4
+
+  activate_cmd: 'eval "$(conda shell.bash hook)" && conda activate /scratch/rtm-uq/alexandre.lima/Breno/conda_envs/tcc'
+
+  launcher: ""
+
+
+# =========================================================
+# MODELO
+# =========================================================
+model:
+  file: /scratch/rtm-uq/alexandre.lima/Breno/24h_1min_DERT_Onlyp65p50_Monte_Carlo.xml
+
+
+# =========================================================
+# COPASI
+# =========================================================
+copasi:
+  install_path: /scratch/rtm-uq/alexandre.lima/COPASI/4.45.298
+
+
+# =========================================================
+# PONTOS ESTACIONÁRIOS / CONDIÇÕES INICIAIS
+# =========================================================
+stationary_points:
+
+  fixed_species:
+    - RNAp50
+    - RNAp65
+
+  grid:
+    min: 1
+    max: 3
+    points: 3
+
+  output: pontos_estacionarios.tsv
+  add_diagnostics: false
+
+
+# =========================================================
+# SIMULAÇÃO COPASI / TIME COURSE
+# =========================================================
+simulation:
+
+  method: deterministic
+
+  duration: 1440
+  intervals: 1440
+  output_start_time: 0
+
+  simulations_per_point: 1
+
+  method_parameters:
+    Relative Tolerance: 1.0e-6
+    Absolute Tolerance: 1.0e-12
+    Max Internal Steps: 10000
+    Max Internal Step Size: 0.0
+
+
+# =========================================================
+# REPORT DO COPASI
+# Time é sempre a coluna 0; a lista define a ordem das demais.
+# =========================================================
+report:
+
+  precision: 6
+
+  species:
+    - RNAp50
+    - RNAp65
+    - NFkB
+    - p50
+    - p65
+    - N0p50
+    - N0p65
+    - NFkB.N1p50
+    - NFkB.N1p65
+
+
+# =========================================================
+# SAÍDAS FINAIS
+# =========================================================
+output:
+
+  landscape: landscape.txt
+  matrix: SavedFileMatrizC_RNAp50_RNAp65.npz
+  figure: landscape_RNAp50_RNAp65.svg
+
+
+# =========================================================
+# SUPERFÍCIE EPIGENÉTICA
+# =========================================================
+landscape_plot:
+
+  x_species: RNAp50
+  y_species: RNAp65
+
+  matrix_dimension: 101

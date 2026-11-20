@@ -1,0 +1,109 @@
+# =========================================================
+# NEXTFLOW
+# =========================================================
+workflow:
+  config_file: config_Li_Wang.yaml
+
+  scripts:
+    stationary_points: ponto_estacionario_config.py
+    simulation: simulationsForLandscape_config.py
+    draw_landscape: DrawLandscape_config.py
+
+  outdir: resultados_Li_Wang
+  chunk_size: 100
+  np_mpi: 3
+  activate_cmd: "source /home/vboxuser/TCC/meu_ambiente/bin/activate"
+
+
+# =========================================================
+# MODELO SBML
+# =========================================================
+model:
+  file: "Li_and_Wang_CancerRes_2015__created_using_SBMLeditor.xml"
+
+
+# =========================================================
+# COPASI
+# =========================================================
+copasi:
+  install_path: /home/vboxuser/TCC/COPASI/4.46.300
+
+
+# =========================================================
+# PONTOS ESTACIONÁRIOS
+# P53 e Zeb serão as duas espécies fixadas na grade.
+# =========================================================
+stationary_points:
+  fixed_species:
+    - P53
+    - Zeb
+
+  grid:
+    min: 0.0
+    max: 2.0
+    points: 100
+
+  output: pontos_estacionarios_P53_Zeb.tsv
+  add_diagnostics: false
+
+
+# =========================================================
+# TIME COURSE DO COPASI
+# O modelo define a unidade de tempo em horas.
+# 24 h com 1440 intervalos = saída a cada 1 minuto.
+# =========================================================
+simulation:
+  method: deterministic
+  duration: 24
+  intervals: 1440
+  output_start_time: 0
+  simulations_per_point: 1
+
+  method_parameters:
+    Relative Tolerance: 1.0e-6
+    Absolute Tolerance: 1.0e-12
+    Max Internal Steps: 10000
+    Max Internal Step Size: 0.0
+
+
+# =========================================================
+# REPORT DO COPASI
+#
+# Ordem EXATA das colunas do landscape:
+#   0 -> Time
+#   1 -> P53
+#   2 -> Mdm2
+#   3 -> Oct4
+#   4 -> miR145
+#   5 -> Zeb
+#   6 -> miR200
+# =========================================================
+report:
+  precision: 6
+
+  species:
+    - P53
+    - Mdm2
+    - Oct4
+    - miR145
+    - Zeb
+    - miR200
+
+
+# =========================================================
+# SAÍDAS
+# =========================================================
+output:
+  landscape: landscape_P53_Zeb.txt
+  matrix: SavedFileMatrizC_P53_Zeb.npz
+  figure: landscape_P53_Zeb.svg
+
+
+# =========================================================
+# SUPERFÍCIE EPIGENÉTICA
+# Usa as colunas P53 e Zeb do Report.
+# =========================================================
+landscape_plot:
+  x_species: P53
+  y_species: Zeb
+  matrix_dimension: 101
